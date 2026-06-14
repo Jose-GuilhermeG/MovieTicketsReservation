@@ -1,13 +1,47 @@
 package io.github.CineTickets.services;
 
+import io.github.CineTickets.exceptions.NotExistsException;
+import io.github.CineTickets.models.Movie;
 import io.github.CineTickets.repositories.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.CineTickets.specifications.MovieSpecifications;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServices {
-    @Autowired
-    private MovieRepository repository;
+    private final MovieRepository repository;
 
+    public Movie createMovie(Movie instance){
+        return repository.save(instance);
+    }
+
+    public Page<Movie> listMovies(Pageable pageable , String title){
+        Specification<Movie> spec = Specification.where(MovieSpecifications.FilterByTitle(title));
+        return repository.findAll(spec , pageable);
+    }
+
+    public Movie movieDetail(Integer id){
+        Movie instance = findByIdOrNull(id);
+        MovieIsNull(instance , id);
+        return instance;
+    }
+
+    public void deleteMovie(Integer id){
+        Movie instance = findByIdOrNull(id);
+        MovieIsNull(instance , id);
+        repository.deleteById(id);
+    }
+
+    private Movie findByIdOrNull(Integer id){
+        return repository.findById(id).orElse(null);
+    }
+
+    private void MovieIsNull(Movie instance , Integer id){
+        if(instance == null) throw new NotExistsException(id);
+    }
 
 }
