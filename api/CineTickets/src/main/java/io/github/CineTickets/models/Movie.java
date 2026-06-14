@@ -1,22 +1,20 @@
 package io.github.CineTickets.models;
 
 import io.github.CineTickets.core.ColumnSize;
+import io.github.CineTickets.core.models.BaseModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "movies")
 @Data
 @ToString
-@EntityListeners(AuditingEntityListener.class)
-public class Movie {
+public class Movie extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +35,7 @@ public class Movie {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Column(name = "is_active", nullable = false)
-    private Boolean isActive = true;
-
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    @ManyToMany(mappedBy = "movies")
+    private Set<Category> categories = new HashSet<Category>();
 
 }
