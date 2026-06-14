@@ -6,10 +6,10 @@ public class NotExistsException extends RuntimeException {
     }
 
     public NotExistsException(Integer id){
-        super(createMessage("id" , id.toString()));
+        super(createMessage("object" , id.toString()));
     }
 
     public static String createMessage(String field , String value){
-        return String.format("a %s with %s not exists" , field , value);
+        return String.format("the %s with %s not exists" , field , value);
     }
 }

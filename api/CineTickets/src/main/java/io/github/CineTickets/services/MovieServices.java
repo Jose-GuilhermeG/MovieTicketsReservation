@@ -26,22 +26,16 @@ public class MovieServices {
 
     public Movie movieDetail(Integer id){
         Movie instance = findByIdOrNull(id);
-        MovieIsNull(instance , id);
         return instance;
     }
 
     public void deleteMovie(Integer id){
         Movie instance = findByIdOrNull(id);
-        MovieIsNull(instance , id);
         repository.deleteById(id);
     }
 
     private Movie findByIdOrNull(Integer id){
-        return repository.findById(id).orElse(null);
-    }
-
-    private void MovieIsNull(Movie instance , Integer id){
-        if(instance == null) throw new NotExistsException(id);
+        return repository.findById(id).orElseThrow(()->new NotExistsException(id));
     }
 
 }
