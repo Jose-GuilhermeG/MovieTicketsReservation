@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "categories")
 @Data
-@ToString
+@ToString(exclude = "movies")
 public class Category extends BaseModel {
 
     @Id
@@ -28,12 +28,7 @@ public class Category extends BaseModel {
     @Column
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-            name = "movie_categories",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
-    private Set<Movie> movies = new HashSet<Movie>();
+    @ManyToMany(mappedBy = "categories")
+    private Set<Movie> movies = new HashSet<>();
 
 }

@@ -12,4 +12,11 @@ public class MovieSpecifications {
                 criteriaBuilder.like(root.get("title"), "%" + title + "%");
     }
 
+    public static Specification<Movie> filterByCategory(List<String> categories){
+        return  (root, query, criteriaBuilder) ->
+                categories == null || categories.isEmpty() ?
+                        criteriaBuilder.conjunction() :
+                        root.join("categories").get("name").in(categories) ;
+    }
+
 }

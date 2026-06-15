@@ -4,7 +4,11 @@ import io.github.CineTickets.core.ColumnSize;
 import io.github.CineTickets.core.models.BaseModel;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,8 +16,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "movies")
-@Data
-@ToString
+@Setter
+@Getter
+@ToString(exclude = "categories")
 public class Movie extends BaseModel {
 
     @Id
@@ -35,7 +40,12 @@ public class Movie extends BaseModel {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @ManyToMany(mappedBy = "movies")
-    private Set<Category> categories = new HashSet<Category>();
+    @ManyToMany
+    @JoinTable(
+            name = "movie_categories",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
 }
