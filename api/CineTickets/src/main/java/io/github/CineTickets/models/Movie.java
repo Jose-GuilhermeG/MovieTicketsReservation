@@ -3,12 +3,10 @@ package io.github.CineTickets.models;
 import io.github.CineTickets.core.ColumnSize;
 import io.github.CineTickets.core.models.BaseModel;
 import jakarta.persistence.*;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.HashSet;

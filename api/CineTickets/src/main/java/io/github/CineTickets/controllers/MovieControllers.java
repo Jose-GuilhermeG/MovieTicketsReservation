@@ -1,9 +1,11 @@
 package io.github.CineTickets.controllers;
 
+import io.github.CineTickets.core.reponses.ApiResponse;
 import io.github.CineTickets.dto.moviesDto.CreateMovieDTO;
 import io.github.CineTickets.dto.moviesDto.DetailMovieDTO;
 import io.github.CineTickets.dto.moviesDto.ListMovieDTO;
 import io.github.CineTickets.mappers.MovieMapper;
+import io.github.CineTickets.models.Movie;
 import io.github.CineTickets.services.MovieServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,12 @@ public class MovieControllers {
     public ResponseEntity<Void> deleteMovie(@PathVariable Integer id){
         service.deleteMovie(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ApiResponse<DetailMovieDTO>> movieUpdate(@PathVariable Integer id , @Valid @RequestBody CreateMovieDTO data){
+        Movie instance = service.updateMovie(id , mapper.toEntity(data) , data.categoriesId());
+        return ResponseEntity.ok(new ApiResponse("object updated" , mapper.toDetailDTO(instance)));
     }
 
 }

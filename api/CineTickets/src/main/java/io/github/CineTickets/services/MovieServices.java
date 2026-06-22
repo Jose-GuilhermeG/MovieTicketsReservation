@@ -12,11 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +23,7 @@ public class MovieServices {
     private final CategoryRepository categoryRepository;
 
     public Movie createMovie(Movie instance , List<Integer> categoriesIds){
-        if(categoriesIds != null){
-            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(categoriesIds));
-            instance.setCategories((categories));
-        };
+        setCategories(instance,categoriesIds);
         return repository.save(instance);
     }
 
@@ -46,9 +41,23 @@ public class MovieServices {
         Movie instance = findByIdOrNull(id);
         repository.deleteById(id);
     }
+    
+    public Movie updateMovie(int id , Movie data , List<Integer> categoriesIds){
+        findByIdOrNull(id);
+        data.setId(id);
+        setCategories(data,categoriesIds);
+        return repository.save(data);
+    }
 
     private Movie findByIdOrNull(Integer id){
         return repository.findById(id).orElseThrow(()->new NotExistsException(id));
+    }
+
+    private void setCategories(Movie instance , List<Integer> ids){
+        if(ids != null){
+            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(ids));
+            instance.setCategories((categories));
+        };
     }
 
 }
