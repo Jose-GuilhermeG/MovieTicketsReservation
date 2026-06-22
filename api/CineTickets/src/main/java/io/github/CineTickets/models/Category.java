@@ -17,11 +17,6 @@ import java.util.Set;
 @ToString(exclude = "movies")
 public class Category extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column
-    private Integer id;
-
     @Column(nullable = true , unique = true , length = ColumnSize.SHORTCHARSIZE)
     private String name;
 

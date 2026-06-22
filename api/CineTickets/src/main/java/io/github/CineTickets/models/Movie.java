@@ -19,10 +19,6 @@ import java.util.Set;
 @ToString(exclude = "categories")
 public class Movie extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @Column(nullable = false, length = ColumnSize.LONGCHARSIZE)
     private String title;
 
