@@ -54,10 +54,15 @@ public class MovieServices {
     }
 
     private void setCategories(Movie instance , List<Integer> ids){
-        if(ids != null){
+        if(ids != null && !ids.isEmpty()){
             Set<Category> categories = new HashSet<>(categoryRepository.findAllById(ids));
+            checkCategoriesAreFind(categories , ids);
             instance.setCategories((categories));
         };
+    }
+
+    private void checkCategoriesAreFind(Set<Category> categories , List<Integer> ids){
+        if(categories.isEmpty()) throw new NotExistsException("There are not any category with id in " + ids.toString());
     }
 
 }

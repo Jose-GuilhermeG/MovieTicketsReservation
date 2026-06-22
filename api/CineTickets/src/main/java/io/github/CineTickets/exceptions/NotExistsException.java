@@ -9,6 +9,10 @@ public class NotExistsException extends RuntimeException {
         super(createMessage("object" , id.toString()));
     }
 
+    public  NotExistsException(String msg){
+        super(msg);
+    }
+
     public static String createMessage(String field , String value){
         return String.format("the %s with %s not exists" , field , value);
     }
